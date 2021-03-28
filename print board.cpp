@@ -4,6 +4,10 @@
 #include <ctime>
 using namespace std;
 
+
+void update_atribut_kecoa(int *health_kecoa,int damage_robot){
+    *health_kecoa=*health_kecoa-damage_robot;
+}
 bool keluar(int pilihan) {      //Fungsi keluar
     if (pilihan == 3) {
         cout << "Anda telah mengalahkan 10 kecoak";
@@ -39,7 +43,7 @@ void gerak_robot(string arah, int *x, int *y) {      //Fungsi nentuin koordinat 
     }
 }
 
-bool checking_loct(string arah,int x, int y){ //buat check geraknya ke luar zona atau enggak
+bool checking_loct(string arah,int x, int y){
     if (arah == "kanan") {
         if((x+1)<=9){
             return true;
@@ -81,7 +85,10 @@ bool checking_loct(string arah,int x, int y){ //buat check geraknya ke luar zona
 
 int main() {
     // Kamus
-    int x, y,x_kecoa,y_kecoa,pilihan;
+    int x=0,y=0,x_kecoa,y_kecoa,pilihan;
+    int health_kecoa=20,health_robot=20;
+    int range_attack_robot=2,range_attack_kecoa=1;
+    int damage_robot = 6,damage_kecoa=4;
     bool flag = false;
     char board[10][10];
     srand((unsigned)time(0));
@@ -89,12 +96,14 @@ int main() {
     // initiate
     x_kecoa=(rand()%9)+1; //random x 1-10
     y_kecoa=(rand()%9)+1; //random x 1-10
-    x = 0;
-    y = 0;
 
     cout << "=========== ROBOT PEMBASMI KECOA ===========" << endl;
     cout << "============================================" << endl << endl;
     cout << "============== TAMPILAN BOARD ==============" << endl << endl;
+    cout << "===============\n";
+    cout << "|HP ROBOT : 20|\n";
+    cout << "|HP KECOA : 20|\n";
+    cout << "===============\n";
     for (int i=0;i<10;i++){
         for (int j=0;j<10;j++){
             if ((i==y) && (j==x)){
@@ -111,12 +120,10 @@ int main() {
         cout << endl;
     }
     cout << endl;
-    cout << "1. Bergerak \n" << "3. Keluar \n";
+    cout << "1. Bergerak\n2. Menyerang\n3. Keluar \n" <<endl;
 
     cout << "Masukkan pilihan: ";
     cin >> pilihan;
-
-
 
     while (flag == false) {
 
@@ -129,8 +136,9 @@ int main() {
                 gerak_robot(arah, &x,&y); // fungsi update posisi dari robot
             }
             else{
-                cout << "PERHATIAN!! ROBOT TIDAK BISA BERGERAK KE LUAR ZONA" << endl;
+                cout << "PERHATIAN !!! ROBOT TIDAK BISA BERGERAK KE LUAR ZONA" << endl;
             }
+            cout << "============== UPDATE TAMPILAN BOARD ==============" << endl << endl;
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
                     if ((i == y) && (j == x)) {
@@ -146,9 +154,47 @@ int main() {
                 }
                 cout << "\n";
             }
+            cout << endl;
+            if (range_check(x,y,x_kecoa,y_kecoa)){
+                cout << "PERHATIAN !!! ROBOT DAPAT MENYERANG" << endl << endl;
+            }
+            else{
+                cout << endl;
+            }
 
         }
-        cout << "1. Bergerak \n" << "3. Keluar \n";
+        else if (pilihan == 2){
+            if (range_check(x,y,x_kecoa,y_kecoa)){
+                cout << "\nROBOT MENYERANG KECOA\n";
+                cout << endl;
+                update_atribut_kecoa(&health_kecoa,damage_robot);
+                cout << "===============\n";
+                cout << "|HP ROBOT : "<< health_robot << "|\n";
+                cout << "|HP KECOA : "<< health_kecoa << "|\n";
+                cout << "===============\n\n";
+
+                for (int i = 0; i < 10; i++) {
+                    for (int j = 0; j < 10; j++) {
+                        if ((i == y) && (j == x)) {
+                            board[i][j] = 'R';
+                        }
+                        else if ((i==y_kecoa) && (j==x_kecoa)){
+                            board[i][j] = 'K';
+                        }
+                        else {
+                            board[i][j] = '.';
+                        }
+                        cout << board[i][j];
+                    }
+                    cout<< endl;
+                }
+            }
+            else{
+                cout << "MUSUH DILUAR JANGKAUAN !!! " << endl;
+            }
+
+        }
+        cout << "1. Bergerak\n2. Menyerang\n3. Keluar \n" <<endl;
         cout << "Masukkan pilihan: ";
         cin >> pilihan;
         flag = keluar(pilihan);
