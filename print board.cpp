@@ -24,7 +24,7 @@ void update_loct_kecoa(int x,int y,int *x_kecoa, int *y_kecoa){
 }
 bool keluar(int pilihan) {      //Fungsi keluar
     if (pilihan == 3) {
-        cout << "TERIMA KASIH TELAH BERMAIN";
+        cout << "TERIMA KASIH TELAH BERMAIN \n";
         return true;
     }
     else {
@@ -299,6 +299,6 @@ int main() {
         flag = keluar(pilihan);
         
     }
-    cout << "ANDA TELAH MENGALAHKAN " << death_count << endl;
+    cout << "ANDA TELAH MENGALAHKAN " << death_count << " KECOAK" << endl;
     return 0;
 }
