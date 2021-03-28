@@ -4,10 +4,24 @@
 #include <ctime>
 using namespace std;
 
+bool status_kecoa(int *health_kecoa){
+    if (*health_kecoa <= 0){
+        return false ;
+    } 
+    else {
+        return true ;
+    }
+}
 
 void update_atribut_kecoa(int *health_kecoa,int damage_robot){
     *health_kecoa=*health_kecoa-damage_robot;
 }
+
+void update_atribut_robot(int *health_robot,int damage_kecoa){
+    *health_robot=*health_robot-damage_kecoa;
+    
+}
+
 void update_loct_kecoa(int x,int y,int *x_kecoa, int *y_kecoa){
     srand((unsigned)time(0));
     *x_kecoa=(rand()%9)+1; //random x 1-10
@@ -19,7 +33,7 @@ void update_loct_kecoa(int x,int y,int *x_kecoa, int *y_kecoa){
 }
 bool keluar(int pilihan) {      //Fungsi keluar
     if (pilihan == 3) {
-        cout << "Anda telah mengalahkan 10 kecoak";
+        cout << "Anda telah mengalahkan " ;
         return true;
     }
     else {
@@ -87,6 +101,10 @@ bool checking_loct(string arah,int x, int y){
     }
 }
 
+void invalid(){
+    cout << "masukkan salah" << endl;
+}
+
 //Buat fungsi cetak board yang nerima parameter x,y
 
 // Fungsi cek input arah, pilihan
@@ -97,7 +115,8 @@ int main() {
     int x=0,y=0,x_kecoa,y_kecoa,pilihan;
     int health_kecoa=20,health_robot=20;
     int range_attack_robot=2,range_attack_kecoa=1;
-    int damage_robot = 6,damage_kecoa=4;
+    int damage_robot = 6,damage_kecoa=rand()%4+1;
+    int death_count = 0;
     bool flag = false;
     char board[10][10];
     srand((unsigned)time(0));
@@ -177,29 +196,58 @@ int main() {
                 cout << "\nROBOT MENYERANG KECOA\n";
                 cout << endl;
                 update_atribut_kecoa(&health_kecoa,damage_robot);
-                cout << "===============\n";
-                cout << "|HP ROBOT : "<< health_robot << "|\n";
-                cout << "|HP KECOA : "<< health_kecoa << "|\n";
-                cout << "===============\n\n";
+                update_atribut_robot(&health_robot,damage_kecoa);
+                if (status_kecoa(&health_kecoa)==true){
+                    cout << "===============\n";
+                    cout << "|HP ROBOT : "<< health_robot << "|\n";
+                    cout << "|HP KECOA : "<< health_kecoa << "|\n";
+                    cout << "===============\n\n";
 
 
-                update_loct_kecoa(x,y,&x_kecoa,&y_kecoa); // kecoa pindah  tempat
-                cout << "WASPADA !!! KECOA TELAH BERPINDAH LOKASI\n\n";
-                for (int i = 0; i < 10; i++) {
-                    for (int j = 0; j < 10; j++) {
-                        if ((i == y) && (j == x)) {
-                            board[i][j] = 'R';
-                        }
-                        else if ((i==y_kecoa) && (j==x_kecoa)){
-                            board[i][j] = 'K';
-                        }
-                        else {
-                            board[i][j] = '.';
-                        }
-                        cout << board[i][j];
-                    }
+
+                    update_loct_kecoa(x,y,&x_kecoa,&y_kecoa); // kecoa pindah  tempat
+                    cout << "ROBOT DIKENAI DAMAGE " << damage_kecoa <<endl;
+                    cout << "WASPADA !!! KECOA TELAH BERPINDAH LOKASI\n\n";
+                    for (int i = 0; i < 10; i++) {
+                        for (int j = 0; j < 10; j++) {
+                            if ((i == y) && (j == x)) {
+                                board[i][j] = 'R';
+                            }
+                            else if ((i==y_kecoa) && (j==x_kecoa)){
+                                board[i][j] = 'K';
+                            }
+                            else {
+                                board[i][j] = '.';
+                            }
+                            cout << board[i][j];
+                            }
                     cout<< endl;
+                    }
                 }
+                else {
+                    death_count = death_count + 1;
+                    cout << "Robot telah membubuh 1 kecoa";
+                    cout << "===============\n";
+                    cout << "|HP ROBOT : 20|\n";
+                    cout << "|HP KECOA : 20|\n";
+                    cout << "===============\n";
+                    for (int i=0;i<10;i++){
+                        for (int j=0;j<10;j++){
+                            if ((i==y) && (j==x)){
+                                board[i][j] = 'R';
+                            }
+                            else if ((i==y_kecoa)&&(j==x_kecoa)){
+                                board[i][j] = 'K';
+                            }
+                            else{
+                                board[i][j] = '.';
+                            }
+                            cout << board[i][j];
+                        }
+                        cout << endl;
+                    }
+                }
+                
             }
             else{
                 cout << "MUSUH DILUAR JANGKAUAN !!! " << endl;
