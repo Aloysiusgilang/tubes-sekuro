@@ -24,7 +24,7 @@ void update_loct_kecoa(int x,int y,int *x_kecoa, int *y_kecoa){
 }
 bool keluar(int pilihan) {      //Fungsi keluar
     if (pilihan == 3) {
-        cout << "Anda telah mengalahkan 10 kecoak";
+        cout << "TERIMA KASIH TELAH BERMAIN";
         return true;
     }
     else {
@@ -42,23 +42,24 @@ bool range_check(int x, int y, int x_kecoa, int y_kecoa ) // fungsi pengecekan j
     }
 }
 
-void gerak_robot(string arah, int *x, int *y) {      //Fungsi nentuin koordinat selanjutnya
-    if (arah == "kanan") {
+void gerak_robot(int arah, int *x, int *y) {      //Fungsi nentuin koordinat selanjutnya
+    if (arah == 1) {
         *x = *x + 1;
     }
-    else if (arah == "kiri") {
+    else if (arah == 2) {
         *x = *x - 1;
     }
-    else if (arah == "bawah") {
+    else if (arah == 4) {
         *y = *y + 1;
     }
     else { // untuk arah atas
         *y = *y - 1;
     }
+    
 }
 
-bool checking_loct(string arah,int x, int y){
-    if (arah == "kanan") {
+bool checking_loct(int arah,int x, int y){
+    if (arah == 1) {
         if((x+1)<=9){
             return true;
         }
@@ -66,7 +67,7 @@ bool checking_loct(string arah,int x, int y){
             return false;
         }
     }
-    else if (arah == "kiri") {
+    else if (arah == 2) {
         if((x-1)>=0){
             return true;
         }
@@ -74,7 +75,7 @@ bool checking_loct(string arah,int x, int y){
             return false;
         }
     }
-    else if (arah == "bawah") {
+    else if (arah == 4) {
         if((y+1)<=9){
             return true;
         }
@@ -92,6 +93,30 @@ bool checking_loct(string arah,int x, int y){
     }
 }
 
+void check_arah(int *arah){
+    if( *arah > 4 || *arah < 1){
+        cout << "Masukkan tidak tersedia. Ulangi lagi. \n";
+        cout << "Masukkan arah gerak (angka)  \n";
+        cout << "1. Kanan  \n";
+        cout << "2. Kiri  \n";
+        cout << "3. Atas  \n";
+        cout << "4. Bawah  \n";
+        cin >> *arah;
+        check_arah(*&arah);
+    }
+}
+
+void check_pilihan(int *pilihan){
+    if( *pilihan > 3 || *pilihan < 1){
+        cout << "Masukkan tidak tersedia. Ulangi lagi. \n";
+        cout << "1. Bergerak\n2. Menyerang\n3. Keluar \n" <<endl;
+        cout << "Masukkan pilihan :  \n";
+        
+        cin >> *pilihan;
+        check_pilihan(*&pilihan);
+    }
+}
+
 //Buat fungsi cetak board yang nerima parameter x,y
 
 // Fungsi cek input arah, pilihan
@@ -99,6 +124,7 @@ bool checking_loct(string arah,int x, int y){
 
 int main() {
     // Kamus
+    srand((unsigned)time(0));
     int x=0,y=0,x_kecoa,y_kecoa,pilihan;
     int health_kecoa=20,health_robot=20;
     int range_attack_robot=2,range_attack_kecoa=1;
@@ -106,7 +132,7 @@ int main() {
     int death_count = 0;
     bool flag = false;
     char board[10][10];
-    srand((unsigned)time(0));
+    
 
     // initiate
     x_kecoa=(rand()%9)+1; //random x 1-10
@@ -139,16 +165,28 @@ int main() {
 
     cout << "Masukkan pilihan: ";
     cin >> pilihan;
+    if (pilihan > 3 || pilihan < 1){
+        check_pilihan(&pilihan);
+    }
 
     while (flag == false) {
 
         if (pilihan == 1) {
-            string arah;
-            cout << "Masukkan arah gerak (kanan,kiri,atas,bawah) : \n";
+            int arah;
+            cout << "Masukkan arah gerak (angka)  \n";
+            cout << "1. Kanan  \n";
+            cout << "2. Kiri  \n";
+            cout << "3. Atas  \n";
+            cout << "4. Bawah  \n";
+
             cin >> arah;
+            if (arah >4 || arah<1){
+                check_arah(&arah);
+            }
             cout << endl;
             if (checking_loct(arah,x,y)){
                 gerak_robot(arah, &x,&y); // fungsi update posisi dari robot
+
             }
             else{
                 cout << "PERHATIAN !!! ROBOT TIDAK BISA BERGERAK KE LUAR ZONA" << endl;
@@ -193,9 +231,10 @@ int main() {
                 cout << "|HP KECOA : "<< health_kecoa << "|\n";
                 cout << "===============\n\n";
                 cout << "DAMAGE KECOA =" << damage_kecoa << endl;
-                cout << "DAMAGE ROBOT =" << damage_robot;
+                cout << "DAMAGE ROBOT =" << damage_robot << endl;
 
                 if(health_kecoa <= 0){
+                    cout << "ANDA TELAH MEMBUNUH 1 KECOAK" << endl;
                     death_count = death_count + 1 ;
                     health_kecoa = 20;
                     for (int i=0;i<10;i++){
@@ -246,10 +285,20 @@ int main() {
             }
 
         }
+
+        else {
+            cout << "Masukkan invalid, dikembalikan ke menu awal" << endl;
+            main();
+        }
         cout << "1. Bergerak\n2. Menyerang\n3. Keluar \n" <<endl;
         cout << "Masukkan pilihan: ";
         cin >> pilihan;
+        if (pilihan > 3 || pilihan < 1){
+            check_pilihan(&pilihan);
+        }
         flag = keluar(pilihan);
+        
     }
+    cout << "ANDA TELAH MENGALAHKAN " << death_count << endl;
     return 0;
 }
