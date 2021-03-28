@@ -8,6 +8,15 @@ using namespace std;
 void update_atribut_kecoa(int *health_kecoa,int damage_robot){
     *health_kecoa=*health_kecoa-damage_robot;
 }
+void update_loct_kecoa(int x,int y,int *x_kecoa, int *y_kecoa){
+    srand((unsigned)time(0));
+    *x_kecoa=(rand()%9)+1; //random x 1-10
+    *y_kecoa=(rand()%9)+1; //random x 1-10
+    if ((*x_kecoa == x) || (*y_kecoa==y)){
+        update_loct_kecoa(x,y,*&x_kecoa,*&y_kecoa);
+    }
+
+}
 bool keluar(int pilihan) {      //Fungsi keluar
     if (pilihan == 3) {
         cout << "Anda telah mengalahkan 10 kecoak";
@@ -173,6 +182,9 @@ int main() {
                 cout << "|HP KECOA : "<< health_kecoa << "|\n";
                 cout << "===============\n\n";
 
+
+                update_loct_kecoa(x,y,&x_kecoa,&y_kecoa); // kecoa pindah  tempat
+                cout << "WASPADA !!! KECOA TELAH BERPINDAH LOKASI\n\n";
                 for (int i = 0; i < 10; i++) {
                     for (int j = 0; j < 10; j++) {
                         if ((i == y) && (j == x)) {
