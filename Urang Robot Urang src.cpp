@@ -234,9 +234,11 @@ int main() {
                 cout << "DAMAGE ROBOT =" << damage_robot << endl;
 
                 if(health_kecoa <= 0){
+                    srand((unsigned)time(0));
                     cout << "\nANDA TELAH MEMBUNUH 1 KECOAK" << endl;
                     death_count = death_count + 1 ;
                     health_kecoa = 20;
+                    damage_kecoa=(rand() % 4) + 1 ;
                     for (int i=0;i<10;i++){
                         for (int j=0;j<10;j++){
                             if ((i==y) && (j==x)){
