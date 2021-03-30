@@ -234,7 +234,7 @@ int main() {
                 cout << "DAMAGE ROBOT =" << damage_robot << endl;
 
                 if(health_kecoa <= 0){
-                    cout << "ANDA TELAH MEMBUNUH 1 KECOAK" << endl;
+                    cout << "\nANDA TELAH MEMBUNUH 1 KECOAK" << endl;
                     death_count = death_count + 1 ;
                     health_kecoa = 20;
                     for (int i=0;i<10;i++){
@@ -299,6 +299,6 @@ int main() {
         flag = keluar(pilihan);
         
     }
-    cout << "ANDA TELAH MENGALAHKAN " << death_count << " KECOAK" << endl;
+    cout << "\nANDA TELAH MENGALAHKAN " << death_count << " KECOAK" << endl;
     return 0;
 }
