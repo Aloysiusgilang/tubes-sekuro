@@ -117,11 +117,6 @@ void check_pilihan(int *pilihan){
     }
 }
 
-//Buat fungsi cetak board yang nerima parameter x,y
-
-// Fungsi cek input arah, pilihan
-//Cek bakal keluar peta ato nabrak kecoak ato ngga
-
 int main() {
     // Kamus
     srand((unsigned)time(0));
