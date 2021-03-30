@@ -1,7 +1,7 @@
-========== PROGRAM URANG ROBOT URANG ==========
+========== PROGRAM URANG ROBOT ORANG ==========
 
 Cara menjalankan program:
-1. Double click "Urang Robot Urang.exe".
+1. Double click "Urang Robot Orang.exe".
 2. Akan muncul tampilan papan permainan dan menu yang berisi 3 pilihan, yaitu bergerak, menyerang, dan keluar.
    Pada papan permainan, ada robot dan kecoak. Robot ditandai oleh huruf 'R' dan kecoak ditandai oleh huruf 'K'.
    Robot memiliki 20 HP, begitu juga dengan kecoak.
